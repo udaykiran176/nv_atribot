@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   ClerkLoaded,
@@ -13,9 +13,13 @@ import {
 import { Loader } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Orbitron } from "next/font/google";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { LogIn } from 'lucide-react';
+
+const orbitron = Orbitron({ subsets: ["latin"] });
 
 const AdminDashboardButton = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -62,12 +66,11 @@ export const Header = () => {
         )}
       >
         <div className="mx-auto flex h-full items-center justify-between lg:max-w-screen-lg">
-          <Link href="/" className="flex items-center gap-x-3 pb-7 pl-4 pt-8">
-            <Image src="/smartbit-logo.svg" alt="Mascot" height={50} width={50} />
+          <Link href="/" className="flex items-center gap-x-2 pb-7 pl-4 pt-8">
+            <Image src="/atribot_logo.svg" alt="Mascot" height={40} width={40} />
 
-            <h1 className="text-2xl font-extrabold tracking-wide text-[#081a2e]">
-              Smart <span className="text-[#ee9833]
-              "> Bit </span>
+            <h1 className={`${orbitron.className} text-2xl font-extrabold tracking-wide text-[#081a2e]`}>
+              Atri<span className="text-blue-500">BOT</span>
             </h1>
           </Link>
 
@@ -86,8 +89,9 @@ export const Header = () => {
 
               <SignedOut>
                 <SignInButton mode="modal">
-                  <Button size="lg" variant="ghost">
-                    Login
+                  <Button size="sm" variant="primary">
+                   Login
+                    <span className="ml-2"> <LogIn className="h-5 w-5" /> </span>
                   </Button>
                 </SignInButton>
               </SignedOut>
