@@ -1,18 +1,32 @@
-import { ReactNode } from "react";
-import  Header  from "./header";
+import type { PropsWithChildren } from "react";
 import { Sidebar } from "./sidebar";
+import { db } from "@/db/drizzle";
+import { licenseKeys } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-const mainLayout = ({ children }: { children: ReactNode }) => {
+
+const MainLayout = async ({ children }: PropsWithChildren) => {
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/kit_activation");
+  }
+  const rows = await db.select().from(licenseKeys).where(and(eq(licenseKeys.assignedUserId, userId), eq(licenseKeys.used, true)));
+  if (!rows.length) {
+    redirect("/kit_activation");
+  }
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
+    <>
+    
       <Sidebar />
-  
-      <main className="flex flex-1 flex-col items-center justify-center">
-        {children}
+      <main className="h-full pt-[50px] md:pl-[72px] md:pt-0 lg:pl-[256px]">
+        <div className="mx-auto h-full max-w-[1056px] pb-16 pt-6 md:pb-0">{children}</div>
       </main>
-    </div>
+    
+    </>
   );
 };
 
-export default mainLayout;
+export default MainLayout;

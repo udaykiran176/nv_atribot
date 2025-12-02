@@ -72,7 +72,7 @@ const ActivationContent = () => {
 
   const handleContinue = () => {
     if (activatedCourse) {
-      router.push('/dashboard');
+      router.push('/learn');
     }
   };
 
