@@ -1,7 +1,7 @@
-export default function Learn() {
+export default function Quests() {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      <h1>Learn</h1>
+      <h1>Quests</h1>
     </div>
-  )
+  );
 }
