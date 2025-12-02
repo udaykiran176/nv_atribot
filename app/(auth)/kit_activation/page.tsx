@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 //
 
-const KitActivation = () => {
+const ActivationContent = () => {
   const router = useRouter();
   const params = useSearchParams();
   const initialKey = params.get('key') || '';
@@ -21,6 +21,20 @@ const KitActivation = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activatedCourse, setActivatedCourse] = useState<ActivatedCourse | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const check = async () => {
+      try {
+        const res = await fetch('/api/licenses/me', { cache: 'no-store' });
+        const data = await res.json();
+        if (!mounted) return;
+        if (data?.active) router.push('/learn');
+      } catch {}
+    };
+    void check();
+    return () => { mounted = false; };
+  }, [router]);
 
   const formatLicenseKey = (value: string) => {
     // Remove all non-alphanumeric characters
@@ -252,4 +266,10 @@ const KitActivation = () => {
   );
 };
 
-export default KitActivation;
+export default function KitActivation() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-12" />}>
+      <ActivationContent />
+    </Suspense>
+  )
+}
