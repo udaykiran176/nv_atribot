@@ -143,9 +143,11 @@ export default function Home() {
                   <Button size="lg" variant="primary" className="w-full" onClick={() => setActivateOpen(true)}>
                     <span className="mr-2"> <Key className="h-5 w-5" /> </span>Activate the Kit
                   </Button>
+                  <Link href="/store" className="w-full">
                   <Button size="lg" variant="primaryOutline" className="w-full">
                     <span className="mr-2"> <ShoppingBag className="h-5 w-5" /> </span>Buy the Kit
                   </Button>
+                  </Link>
                 </>
               )}
             </SignedIn>
