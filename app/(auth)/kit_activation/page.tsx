@@ -190,7 +190,7 @@ const ActivationContent = () => {
                         transition={{ type: 'spring', delay: 0.2 }}
                       >
                         <div className="w-20 h-20 rounded-full bg-secondary/20 flex items-center justify-center mx-auto">
-                          <CheckCircle className="w-10 h-10 text-secondary" />
+                          <CheckCircle className="w-10 h-10 text-green-500" />
                         </div>
                       </motion.div>
 

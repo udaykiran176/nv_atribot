@@ -27,9 +27,9 @@ export const Sidebar = ({ className }: SidebarProps) => {
         <Link href="/">
           <div className="flex items-center gap-x-3 pb-7 pt-8 md:justify-center lg:justify-start lg:pl-4">
             <Image src="/atribot_logo.svg" alt="Mascot" height={40} width={40} />
-            <h1  className={`${orbitron.className} text-2xl font-extrabold tracking-wide text-black-600 lg:block`}>
-               Atri<span className="text-blue-600">Bot</span>
-              </h1>
+            <h1 className={`${orbitron.className} hidden lg:inline text-2xl font-extrabold tracking-wide text-black-600 lg:block`}>
+              Atri<span className="text-blue-500">Bot</span>
+            </h1>
           </div>
         </Link>
 

@@ -20,14 +20,14 @@ const MainLayout = async ({ children }: PropsWithChildren) => {
 
   return (
     <>
-    
+
       <Sidebar />
-      <main className="h-full pt-[50px] md:pl-[72px] md:pt-0 lg:pl-[256px]">
+      <main className="h-full  md:pl-[72px] md:pt-0 lg:pl-[256px]">
         <div className="mx-auto h-full max-w-[1056px] pb-16 pt-6 md:pb-0">{children}</div>
       </main>
 
-       <MobileBottomNav />
-    
+      <MobileBottomNav />
+
     </>
   );
 };
