@@ -46,8 +46,6 @@ const features = [
     },
   ];
 
-
-
 export default function Home() {
   const router = useRouter();
   const [activateOpen, setActivateOpen] = useState(false);
@@ -102,7 +100,7 @@ export default function Home() {
   return (
   <>
     <div className="mx-auto flex w-full max-w-[988px] flex-1 flex-col items-center justify-center gap-2 p-4  lg:flex-row lg:pt-4">
-      <div className="relative mb-8 h-[240px] w-[240px] lg:mb-0 lg:h-[424px] lg:w-[424px]">
+      <div className="relative mb-8 h-[250px] w-[300px] lg:mb-0 lg:h-[424px] lg:w-[424px]">
         <Image src="/hero_image.svg" alt="Hero" fill />
       </div>
 

@@ -10,8 +10,7 @@ import { toast } from 'sonner';
 type ActivatedCourse = { id: number; title: string; description: string };
 import { QrCode, Key, CheckCircle, AlertCircle, Loader2, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-//
+import  Link  from 'next/link';
 
 const ActivationContent = () => {
   const router = useRouter();
@@ -91,7 +90,7 @@ const ActivationContent = () => {
   return (
     <div className="min-h-screen bg-background">
   
-      <main className="pt-24 pb-16">
+      <main className="pt-10 pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-lg mx-auto">
             <motion.div
@@ -247,9 +246,9 @@ const ActivationContent = () => {
             >
               <p>
                 Don’t have a kit yet?{' '}
-                <a href="#" className="text-primary hover:underline">
+                <Link href="/store" className="text-primary hover:underline">
                   Purchase here
-                </a>
+                </Link>
               </p>
               <p className="mt-2">
                 Having trouble?{' '}

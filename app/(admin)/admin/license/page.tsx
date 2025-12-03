@@ -296,7 +296,7 @@ const LicenseKeys = () => {
               <div className="text-center space-y-4 py-4">
                 <div className="bg-white p-4 rounded-xl inline-block">
                   <QRCodeSVG 
-                    value={`https://www.atribot.in/kit_activations?key=${qrKey.key}`}
+                    value={`${(process.env.NEXT_PUBLIC_PUBLIC_WEB_LINK || (typeof window !== 'undefined' ? window.location.origin : '')).replace(/\/$/, '')}/kit_activation?key=${qrKey.key}`}
                     size={200}
                     level="H"
                   />
