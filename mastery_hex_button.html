@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mastery Hex — Final (plug-and-play, user CSS)</title>
+<style>
+/* User-provided sizing and improved styles combined with previous behavior */
+:root{--card-w:320px}
+body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial; margin:28px}
+
+/* Use user's exact button sizing */
+.SectionStructure_lessonButton__wXl4z{ -webkit-user-select:none; -moz-user-select:none; user-select:none; position:relative; height:60px; width:72px; cursor:pointer; }
+
+/* wrapper */
+.SectionStructure_masteryButtonWrapper__md8cF{position:relative;display:inline-block}
+
+/* make the inner div behave like a button, sized to match user's slot */
+.SectionStructure_masteryButton__TGjyl{width:72px;height:60px;position:relative;display:inline-block;cursor:pointer;outline:none;border-radius:6px;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
+.SectionStructure_masteryButton__TGjyl:focus{box-shadow:0 6px 20px rgba(59,130,246,0.12);}
+
+/* User's precise layer sizes and positions */
+.SectionStructure_hexBase__o0XNa{width:72px;position:absolute;top:0;left:0;z-index:0;pointer-events:none}
+.SectionStructure_hexTopShadow__R44Lg{width:56px;position:absolute;top:8px;left:8px;z-index:2;pointer-events:none}
+.SectionStructure_hexTop__jA3Ct{width:56px;position:absolute;top:-2px;left:8px;z-index:3;pointer-events:none}
+.SectionStructure_hexIcon__qQ3o_{width:28px;position:absolute;top:10px;left:22px;z-index:4;pointer-events:none}
+
+/* keep transitions and reduced-motion handling */
+.SectionStructure_hexBase__o0XNa, .SectionStructure_hexTopShadow__R44Lg, .SectionStructure_hexTop__jA3Ct, .SectionStructure_hexIcon__qQ3o_ { transition: transform 220ms cubic-bezier(.2,.9,.25,1), filter 200ms ease; transform-origin:center center; }
+
+/* hover push effect: move top & icon down */
+.SectionStructure_masteryButton__TGjyl:hover .SectionStructure_hexTop__jA3Ct,
+.SectionStructure_masteryButton__TGjyl:focus .SectionStructure_hexTop__jA3Ct{ transform: translateY(8px); }
+.SectionStructure_masteryButton__TGjyl:hover .SectionStructure_hexIcon__qQ3o_,
+.SectionStructure_masteryButton__TGjyl:focus .SectionStructure_hexIcon__qQ3o_{ transform: translateY(8px); }
+
+/* active pressed */
+.SectionStructure_masteryButton__TGjyl:active .SectionStructure_hexTop__jA3Ct,
+.SectionStructure_masteryButton__TGjyl:active .SectionStructure_hexIcon__qQ3o_{ transform: translateY(12px) scale(.98); }
+
+/* unlocked visual */
+.SectionStructure_masteryButton__TGjyl.unlocked{ transform: translateY(-4px); transition: transform 260ms cubic-bezier(.2,.9,.25,1); }
+
+/* Card (reuse previous card style) */
+.SectionStructure_lessonInfoWrapper__00hQo{
+  position:absolute;
+  top:100%;
+  left:50%;
+  transform:translateX(-50%) translateY(12px);
+  width:var(--card-w);
+  max-width:calc(100vw - 40px);
+  background:#fff;
+  border-radius:10px;
+  padding:14px;
+  border:1px solid rgba(15,23,42,0.06);
+  box-shadow:0 18px 40px rgba(2,6,23,0.12);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 220ms ease,transform 220ms cubic-bezier(.2,.9,.25,1);
+  z-index:50;
+}
+.SectionStructure_lessonInfoWrapper__00hQo.open{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}{opacity:1;pointer-events:auto;transform:translateY(-50%) translateX(0)}
+.SectionStructure_arrowUp__sSSEM{
+  position:absolute;
+  top:-8px;               /* arrow ABOVE the card */
+  left:50%;               /* center horizontally */
+  transform:translateX(-50%) rotate(45deg);
+  width:18px;height:18px;
+  background:#fff;
+  border-left:1px solid rgba(15,23,42,0.06);
+  border-top:1px solid rgba(15,23,42,0.06);
+  box-shadow:-1px -1px 2px rgba(2,6,23,0.05);
+}
+
+/* typography / CTA */
+.Text_subTitle___SX9V{margin:0;font-size:14px;color:#0f172a}
+.Text_normal__n3ZPv{margin:6px 0 12px;color:#6b7280;font-size:12px}
+.ButtonHome_container__sYaA6{width:100%;padding:8px;border-radius:6px;border:0;background:#7fb3ff;color:#fff;font-weight:700;letter-spacing:.5px;font-size:13px}
+.ButtonBase_disabled__BlVNi, .ButtonHome_disabled__JnXtE{cursor:not-allowed;opacity:0.95}
+.ButtonHome_container__sYaA6.unlocked{background:linear-gradient(90deg,#4f46e5,#60a5fa);box-shadow:0 10px 30px rgba(79,70,229,0.16);cursor:pointer}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){ .SectionStructure_hexBase__o0XNa, .SectionStructure_hexTopShadow__R44Lg, .SectionStructure_hexTop__jA3Ct, .SectionStructure_hexIcon__qQ3o_, .SectionStructure_lessonInfoWrapper__00hQo { transition: none !important; } }
+
+/* small responsive tweak */
+@media (max-width:520px){ .SectionStructure_lessonInfoWrapper__00hQo{left:auto;right:0;transform:translateY(-50%) translateX(-6px)} .SectionStructure_arrowUp__sSSEM{left:auto;right:-10px} }
+</style>
+</head>
+<body style="display:flex;justify-content:center;align-items:center;min-height:100vh;flex-direction:column;gap:16px;">
+
+<!-- Plug-and-play markup using user's classes and sizes -->
+<div class="SectionStructure_masteryButtonWrapper__md8cF">
+  <div class="SectionStructure_masteryButton__TGjyl SectionStructure_lessonButton__wXl4z" id="atrMasteryHex" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="atrMasteryInfo" aria-label="Mastery challenge">
+    <img alt="hex base" class="SectionStructure_hexBase__o0XNa" src="https://coddy.tech/icons/journey/hex-closed-base.svg">
+    <img alt="hex top shadow" class="SectionStructure_hexTopShadow__R44Lg" src="https://coddy.tech/icons/journey/hex-closed-shadow.svg">
+    <img alt="hex top" class="SectionStructure_hexTop__jA3Ct" src="https://coddy.tech/icons/journey/hex-closed-top.svg">
+    <img alt="mastery icon" class="SectionStructure_hexIcon__qQ3o_" src="https://coddy.tech/icons/journey/lesson-mastery.svg">
+  </div>
+
+  <div class="SectionStructure_lessonInfoWrapper__00hQo  SectionStructure_left__80l3G" id="atrMasteryInfo" role="dialog" aria-hidden="true" aria-labelledby="atrMasteryTitle">
+    <div class="SectionStructure_lessonInfo__J02W4 ">
+      <div class="SectionStructure_arrowUp__sSSEM SectionStructure_left__80l3G"></div>
+      <div class="Layout_base__7MdPl" style="align-items: flex-start; justify-content: center;">
+        <p id="atrMasteryTitle" class="Text_subTitle___SX9V Text_colorPrimary__iIPFl">Mastery Challenge</p>
+        <div style="height: 8px;"></div>
+        <p class="Text_normal__n3ZPv Text_colorSecondary__IcneE">Complete the lesson beside to unlock this!</p>
+      </div>
+      <div class="Layout_base__7MdPl" style="align-items: stretch; justify-content: center; margin-top:8px;">
+        <button id="atrMasteryCTA" disabled class="ButtonBase_button__OiByR ButtonBase_withoutBorder__Uybyz ButtonBase_disabled__BlVNi ButtonHome_container__sYaA6  ButtonHome_disabled__JnXtE  buttonPrimary"><span class="ButtonHome_text__XdABS ">LOCKED</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const hex = document.getElementById('atrMasteryHex');
+  const info = document.getElementById('atrMasteryInfo');
+  const cta = document.getElementById('atrMasteryCTA');
+
+  function toggleInfo(open){
+    if(open){
+      info.classList.add('open');
+      info.setAttribute('aria-hidden','false');
+      hex.setAttribute('aria-expanded','true');
+      if(!cta.disabled) cta.focus();
+      document.addEventListener('click', outside);
+      document.addEventListener('keydown', onKey);
+    } else {
+      info.classList.remove('open');
+      info.setAttribute('aria-hidden','true');
+      hex.setAttribute('aria-expanded','false');
+      document.removeEventListener('click', outside);
+      document.removeEventListener('keydown', onKey);
+    }
+  }
+
+  hex.addEventListener('click', ()=> toggleInfo(!info.classList.contains('open')));
+  hex.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleInfo(!info.classList.contains('open')); }
+    if(e.key === 'ArrowDown') { e.preventDefault(); toggleInfo(true); }
+  });
+
+  function outside(e){ if(!info.contains(e.target) && !hex.contains(e.target)) toggleInfo(false); }
+  function onKey(e){ if(e.key === 'Escape') toggleInfo(false); }
+
+  window.unlockMastery = function unlockMastery(){
+    hex.classList.add('unlocked');
+    if(cta){ cta.disabled = false; cta.classList.add('unlocked'); cta.classList.remove('ButtonBase_disabled__BlVNi','ButtonHome_disabled__JnXtE'); const label = cta.querySelector('.ButtonHome_text__XdABS'); if(label) label.textContent = 'OPEN'; }
+    try{ hex.animate([{ transform: 'translateY(-4px)' },{ transform: 'translateY(-8px) scale(1.02)' },{ transform: 'translateY(-4px)' }],{ duration:700, easing:'cubic-bezier(.2,.9,.25,1)'}); }catch(e){}
+  };
+
+  window.lockMastery = function lockMastery(){ hex.classList.remove('unlocked'); if(cta){ cta.disabled = true; cta.classList.remove('unlocked'); cta.classList.add('ButtonBase_disabled__BlVNi','ButtonHome_disabled__JnXtE'); const label = cta.querySelector('.ButtonHome_text__XdABS'); if(label) label.textContent = 'LOCKED'; } };
+
+})();
+</script>
+
+</body>
+</html>

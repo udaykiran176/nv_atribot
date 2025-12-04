@@ -183,8 +183,11 @@ export default function VideosPage() {
                             <Input placeholder="Video title" value={title} onChange={(e) => setTitle(e.target.value)} />
                         </div>
                         <div className="space-y-2">
-                            <Label>URL</Label>
-                            <Input placeholder="https://..." value={url} onChange={(e) => setUrl(e.target.value)} />
+                            <Label>Mux Playback ID</Label>
+                            <Input placeholder="Enter Mux Playback ID (e.g., abc123xyz...)" value={url} onChange={(e) => setUrl(e.target.value)} />
+                            <p className="text-xs text-muted-foreground">
+                                Find this in your Mux dashboard under Assets → Select your video → Copy the Playback ID
+                            </p>
                         </div>
                     </div>
                     <DialogFooter>

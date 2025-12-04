@@ -1,9 +1,8 @@
 "use client";
 
-import { Video, CreditCard, Gamepad2, List, HelpCircle } from "lucide-react";
+
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 type ChallengeType = 'video' | 'swipe-card' | 'game' | 'step' | 'mcq';
 
@@ -17,11 +16,11 @@ type LessonButtonProps = {
 };
 
 const challengeConfig = {
-    'video': { icon: Video, color: 'bg-red-500', hoverColor: 'hover:bg-red-600', href: 'videos', label: 'Videos' },
-    'swipe-card': { icon: CreditCard, color: 'bg-blue-500', hoverColor: 'hover:bg-blue-600', href: 'swipe-cards', label: 'Swipe Cards' },
-    'game': { icon: Gamepad2, color: 'bg-green-500', hoverColor: 'hover:bg-green-600', href: 'games', label: 'Games' },
-    'step': { icon: List, color: 'bg-purple-500', hoverColor: 'hover:bg-purple-600', href: 'steps', label: 'Build' },
-    'mcq': { icon: HelpCircle, color: 'bg-orange-500', hoverColor: 'hover:bg-orange-600', href: 'mcq', label: 'Quiz' }
+    'video': { icon: '/video-mastery.svg', hexTop: '/hex-video-top.svg', href: 'videos', label: 'Videos' },
+    'swipe-card': { icon: '/swipe-mastery.svg', hexTop: '/hex-swipe-top.svg', href: 'swipe-cards', label: 'Swipe Cards' },
+    'game': { icon: '/game-mastery.svg', hexTop: '/hex-game-top.svg', href: 'games', label: 'Games' },
+    'step': { icon: '/build-mastery.svg', hexTop: '/hex-step-top.svg', href: 'steps', label: 'Build' },
+    'mcq': { icon: '/mcq-mastery.svg', hexTop: '/hex-mcq-top.svg', href: 'mcq', label: 'Quiz' }
 };
 
 export const LessonButton = ({
@@ -47,7 +46,6 @@ export const LessonButton = ({
     const isFirst = index === 0;
 
     const config = challengeConfig[challengeType];
-    const Icon = config.icon;
 
     const href = `/lesson/${id}/${config.href}`;
 
@@ -70,19 +68,52 @@ export const LessonButton = ({
                     </div>
                 )}
 
-                <div className="relative">
-                    <Button
-                        size="rounded"
-                        className={cn(
-                            "h-[70px] w-[70px] border-b-8 transition-colors",
-                            `${config.color} ${config.hoverColor} border-gray-700`
-                        )}
-                    >
-                        <Icon className="h-10 w-10 text-white" />
-                    </Button>
+                <div className="relative inline-block group">
+                    {/* Hexagonal Button Container */}
+                    <div className="w-[72px] h-[60px] relative cursor-pointer">
+                        {/* Base Layer */}
+                        <Image
+                            src="/hex-closed-base.svg"
+                            alt=""
+                            width={72}
+                            height={68}
+                            className="absolute top-0 left-0 z-0 pointer-events-none"
+                        />
 
+                        {/* Shadow Layer */}
+                        <Image
+                            src="/hex-closed-shadow.svg"
+                            alt=""
+                            width={56}
+                            height={42}
+                            className="absolute top-[8px] left-[8px] z-[2] pointer-events-none"
+                        />
+
+                        {/* Top Colored Layer - moves on hover/active */}
+                        <Image
+                            src={config.hexTop}
+                            alt=""
+                            width={56}
+                            height={42}
+                            className="absolute top-[-2px] left-[8px] z-[3] pointer-events-none transition-transform duration-[220ms] ease-[cubic-bezier(0.2,0.9,0.25,1)] group-hover:translate-y-[8px] group-active:translate-y-[12px] group-active:scale-[0.98]"
+                            style={{ transformOrigin: 'center center' }}
+                        />
+
+                        {/* Icon Layer - moves on hover/active */}
+                        <div className="absolute top-[10px] left-[22px] z-[4] pointer-events-none transition-transform duration-[220ms] ease-[cubic-bezier(0.2,0.9,0.25,1)] group-hover:translate-y-[8px] group-active:translate-y-[12px] group-active:scale-[0.98]" style={{ transformOrigin: 'center center' }}>
+                            <Image
+                                src={config.icon}
+                                alt=""
+                                width={28}
+                                height={16}
+                                className="w-7 h-4"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Challenge Count Badge */}
                     {challengeCount && challengeCount > 1 && (
-                        <div className="absolute -top-2 -right-2 bg-white border-2 border-gray-700 rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold">
+                        <div className="absolute -top-2 -right-2 bg-white border-2 border-gray-700 rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold z-[5]">
                             {challengeCount}
                         </div>
                     )}
