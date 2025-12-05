@@ -73,12 +73,11 @@ export const games = pgTable('games', {
   id: serial('id').primaryKey(),
   lessonId: integer('lesson_id').notNull().references(() => lessons.id, { onDelete: 'cascade' }),
   title: varchar('title', { length: 256 }).notNull(),
-  type: varchar('type', { length: 128 }).notNull(), // e.g., 'puzzle', 'quiz', 'drag-drop'
-  data: jsonb('data').notNull(), // Game-specific configuration and content
+  component: varchar('component', { length: 256 }).notNull(),
+  thumbnail: text('thumbnail'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   gamesLessonIdIdx: index('games_lesson_id_idx').on(table.lessonId),
-  gamesTypeIdx: index('games_type_idx').on(table.type),
 }))
 
 // ============================================

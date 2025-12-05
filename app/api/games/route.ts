@@ -18,14 +18,24 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     const body = await request.json()
-    const [newGame] = await db.insert(games).values(body).returning()
+    const { lessonId, title, component, thumbnail } = body
+    const [newGame] = await db.insert(games).values({
+        lessonId,
+        title,
+        component,
+        thumbnail
+    }).returning()
     return NextResponse.json(newGame)
 }
 
 export async function PUT(request: Request) {
     const body = await request.json()
-    const { id, ...updateData } = body
-    const [updated] = await db.update(games).set(updateData).where(eq(games.id, id)).returning()
+    const { id, title, component, thumbnail } = body
+    const [updated] = await db.update(games).set({
+        title,
+        component,
+        thumbnail
+    }).where(eq(games.id, id)).returning()
     return NextResponse.json(updated)
 }
 

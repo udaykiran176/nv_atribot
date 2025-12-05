@@ -22,17 +22,6 @@ export default async function MCQPage({ params }: { params: Promise<{ lessonId: 
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 p-6">
-            <div className="max-w-4xl mx-auto">
-                <Link href="/learn">
-                    <Button variant="ghost" className="mb-4">
-                        <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back to Lessons
-                    </Button>
-                </Link>
-
-                <QuizInterface questions={questionsList} />
-            </div>
-        </div>
+        <QuizInterface questions={questionsList} />
     );
 }

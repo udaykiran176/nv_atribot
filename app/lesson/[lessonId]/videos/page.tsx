@@ -1,5 +1,5 @@
 import { db } from "@/db/drizzle";
-import { videos } from "@/db/schema";
+import { videos, lessons } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -11,29 +11,32 @@ export default async function VideosPage({ params }: { params: Promise<{ lessonI
     const { lessonId: lessonIdParam } = await params;
     const lessonId = parseInt(lessonIdParam);
 
+    const [lessonData] = await db
+        .select()
+        .from(lessons)
+        .where(eq(lessons.id, lessonId));
+
+    if (!lessonData) {
+        notFound();
+    }
+
     const videosList = await db
         .select()
         .from(videos)
         .where(eq(videos.lessonId, lessonId))
         .orderBy(asc(videos.order));
 
-    if (videosList.length === 0) {
-        notFound();
-    }
-
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-            <div className="max-w-7xl mx-auto">
-                <Link href="/learn">
-                    <Button variant="ghost" className="mb-4">
+        <div className="min-h-screen bg-red-50">
+            <div className="max-w-7xl mx-auto px-4 py-4">
+                <Link href="/learn" className="inline-block mb-6">
+                    <Button variant="primary">
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back to Lessons
+                        Exit
                     </Button>
                 </Link>
 
-                <h1 className="text-3xl font-bold mb-6">Video Playlist</h1>
-
-                <VideoPlayer videos={videosList} />
+                <VideoPlayer lesson={lessonData} videos={videosList} />
             </div>
         </div>
     );
