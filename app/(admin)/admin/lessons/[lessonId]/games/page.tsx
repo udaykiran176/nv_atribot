@@ -12,7 +12,7 @@ import { toast } from 'sonner'
 import { Edit, Trash2, Plus, ArrowLeft, Gamepad2 } from 'lucide-react'
 import Link from 'next/link'
 
-type Game = { id: number; lessonId: number; title: string; type: string; data: unknown }
+type Game = { id: number; lessonId: number; title: string; component: string; thumbnail: string | null }
 
 export default function GamesPage() {
     const params = useParams()
@@ -23,8 +23,8 @@ export default function GamesPage() {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [editingGame, setEditingGame] = useState<Game | null>(null)
     const [title, setTitle] = useState('')
-    const [type, setType] = useState('')
-    const [data, setData] = useState('')
+    const [component, setComponent] = useState('')
+    const [thumbnail, setThumbnail] = useState('')
 
     const loadGames = async () => {
         const res = await fetch(`/api/games?lessonId=${lessonId}`)
@@ -38,28 +38,28 @@ export default function GamesPage() {
         if (game) {
             setEditingGame(game)
             setTitle(game.title)
-            setType(game.type)
-            setData(JSON.stringify(game.data, null, 2))
+            setComponent(game.component)
+            setThumbnail(game.thumbnail || '')
         } else {
             setEditingGame(null)
             setTitle('')
-            setType('')
-            setData('{}')
+            setComponent('')
+            setThumbnail('')
         }
         setIsDialogOpen(true)
     }
 
     const handleSubmit = async () => {
-        if (!title || !type || !data) { toast('Please fill all fields'); return }
-        let parsedData
-        try { parsedData = JSON.parse(data) } catch { toast('Invalid JSON data'); return }
+        if (!title || !component) { toast('Please fill required fields'); return }
         setIsSaving(true)
+
+        const payload = { title, component, thumbnail }
 
         if (editingGame) {
             const res = await fetch('/api/games', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: editingGame.id, title, type, data: parsedData })
+                body: JSON.stringify({ id: editingGame.id, ...payload })
             })
             setIsSaving(false)
             if (res.ok) { toast('Updated'); setIsDialogOpen(false); await loadGames() }
@@ -68,7 +68,7 @@ export default function GamesPage() {
             const res = await fetch('/api/games', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ lessonId, title, type, data: parsedData })
+                body: JSON.stringify({ lessonId, ...payload })
             })
             setIsSaving(false)
             if (res.ok) { toast('Created'); setIsDialogOpen(false); await loadGames() }
@@ -110,9 +110,14 @@ export default function GamesPage() {
                     <div className="space-y-3">
                         {games.map(game => (
                             <div key={game.id} className="bg-card border rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow">
-                                <div>
-                                    <h3 className="font-semibold">{game.title}</h3>
-                                    <p className="text-sm text-muted-foreground">Type: {game.type}</p>
+                                <div className="flex items-center gap-4">
+                                    {game.thumbnail && (
+                                        <img src={game.thumbnail} alt={game.title} className="w-16 h-16 object-cover rounded-md" />
+                                    )}
+                                    <div>
+                                        <h3 className="font-semibold">{game.title}</h3>
+                                        <p className="text-sm text-muted-foreground">Component: {game.component}</p>
+                                    </div>
                                 </div>
                                 <div className="flex gap-2">
                                     <Button size="sm" variant="outline" onClick={() => handleOpenDialog(game)}>
@@ -141,12 +146,13 @@ export default function GamesPage() {
                             <Input placeholder="Game title" value={title} onChange={(e) => setTitle(e.target.value)} />
                         </div>
                         <div className="space-y-2">
-                            <Label>Type</Label>
-                            <Input placeholder="puzzle, quiz, drag-drop" value={type} onChange={(e) => setType(e.target.value)} />
+                            <Label>Component</Label>
+                            <Input placeholder="e.g. alphabet" value={component} onChange={(e) => setComponent(e.target.value)} />
+                            <p className="text-xs text-muted-foreground">The filename of the component in components/games (without extension)</p>
                         </div>
                         <div className="space-y-2">
-                            <Label>Data (JSON)</Label>
-                            <Textarea rows={10} placeholder="{}" value={data} onChange={(e) => setData(e.target.value)} className="font-mono text-xs" />
+                            <Label>Thumbnail URL</Label>
+                            <Input placeholder="https://..." value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} />
                         </div>
                     </div>
                     <DialogFooter>

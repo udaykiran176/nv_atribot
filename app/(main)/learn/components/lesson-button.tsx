@@ -59,7 +59,7 @@ export const LessonButton = ({
                 }}
             >
                 {current && (
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-10 animate-bounce rounded-xl border-2 bg-white px-3 py-2 font-bold uppercase tracking-wide text-orange-500 text-xs whitespace-nowrap">
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-10 animate-bounce rounded-xl border-2 bg-white px-3 py-2 font-bold uppercase tracking-wide text-blue-500 text-xs whitespace-nowrap">
                         Start
                         <div
                             className="absolute -bottom-2 left-1/2 h-0 w-0 -translate-x-1/2 transform border-x-8 border-t-8 border-x-transparent"
