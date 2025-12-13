@@ -165,7 +165,7 @@ export default function AdminWikiPage() {
                     {qrPost && (
                         <div className="flex flex-col items-center gap-4 py-4">
                             <WikiQRCode
-                                url={`${process.env.NEXT_PUBLIC_PUBLIC_WEB_LINK || (typeof window !== 'undefined' ? window.location.origin : '')}/wiki/${qrPost.slug}`}
+                                url={`${process.env.NEXT_PUBLIC_PUBLIC_WEB_LINK || (typeof window !== 'undefined' ? window.location.origin : '')}wiki/${qrPost.slug}`}
                                 size={200}
                             />
                             <div className="text-center">
