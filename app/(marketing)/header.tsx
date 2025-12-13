@@ -49,7 +49,7 @@ const AdminDashboardButton = () => {
 
   return (
     <Link href="/admin">
-      <Button size="lg" variant="secondary">Go to dashboard</Button>
+      <Button size="lg" variant="secondary">dashboard</Button>
     </Link>
   );
 };
@@ -90,7 +90,7 @@ export const Header = () => {
               <SignedOut>
                 <SignInButton mode="modal">
                   <Button size="sm" variant="primary">
-                   Login
+                    Login
                     <span className="ml-2"> <LogIn className="h-5 w-5" /> </span>
                   </Button>
                 </SignInButton>

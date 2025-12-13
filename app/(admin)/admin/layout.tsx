@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Key, BookOpen, Users, LogOut, Menu, X, Book, Video, CreditCard, Gamepad2, List, HelpCircle, Flag } from 'lucide-react'
+import { Key, BookOpen, Users, LogOut, Menu, X, Book, Video, CreditCard, Gamepad2, List, HelpCircle, Flag, FileText } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const navItems = [
@@ -12,6 +12,7 @@ const navItems = [
   { href: '/admin/course', label: 'Courses', icon: Book },
   { href: '/admin/lessons', label: 'Lessons', icon: BookOpen },
   { href: '/admin/challenges', label: 'All Challenges', icon: Flag },
+  { href: '/admin/wiki', label: 'Wiki', icon: FileText },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -47,13 +48,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (loading || !isAdmin) return null
 
+  // Check if we are in the Wiki Editor (but not the list page)
+  const isWikiEditor = pathname.startsWith('/admin/wiki/') && pathname.split('/').length > 3;
+
+  if (isWikiEditor) {
+    return <>{children}</>;
+  }
+
   return (
     <div className="min-h-screen bg-background flex">
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transform transition-transform duration-300
-        lg:relative lg:transform-none
+        fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transform transition-transform duration-300 lg:relative lg:transform-none
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}>
+`}>
         <div className="p-6 border-b border-border">
           <Link href="/admin" className="flex items-center gap-2">
             <div>
@@ -74,7 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   ? 'bg-primary/10 text-primary'
                   : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 }
-              `}
+`}
               onClick={() => setSidebarOpen(false)}
             >
               <item.icon className="w-5 h-5" />

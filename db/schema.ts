@@ -130,6 +130,24 @@ export const licenseKeys = pgTable('license_keys', {
 }))
 
 // ============================================
+// WIKI POSTS TABLE
+// ============================================
+export const wikiPosts = pgTable('wiki_posts', {
+  id: serial('id').primaryKey(),
+  title: varchar('title', { length: 256 }).notNull(),
+  slug: varchar('slug', { length: 256 }).notNull().unique(),
+  content: text('content').notNull(),
+  excerpt: text('excerpt'),
+  category: varchar('category', { length: 100 }).notNull(),
+  coverImage: varchar('cover_image', { length: 512 }),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  wikiPostsSlugIdx: index('wiki_posts_slug_idx').on(table.slug),
+  wikiPostsCategoryIdx: index('wiki_posts_category_idx').on(table.category),
+}))
+
+// ============================================
 // RELATIONS (Optional - for Drizzle Relational Queries)
 // ============================================
 export const coursesRelations = relations(courses, ({ many }) => ({
@@ -216,4 +234,7 @@ export type McqQuestion = typeof mcqQuestions.$inferSelect
 export type NewMcqQuestion = typeof mcqQuestions.$inferInsert
 
 export type LicenseKey = typeof licenseKeys.$inferSelect
-export type NewLicenseKey = typeof licenseKeys.$inferInsert
+export type newLicenseKey = typeof licenseKeys.$inferInsert
+
+export type WikiPost = typeof wikiPosts.$inferSelect
+export type NewWikiPost = typeof wikiPosts.$inferInsert
