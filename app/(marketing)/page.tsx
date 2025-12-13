@@ -468,7 +468,7 @@ export default function Home() {
               className="relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-xl"
             >
               <Image
-                src="/mcqs_and_challenges.png"
+                src="/mcq_challenges.png"
                 alt="MCQs & Challenges"
                 fill
                 className="object-cover"
