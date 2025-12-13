@@ -5,7 +5,9 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/webhooks/stripe",
+  "/api/wiki(.*)",
   "/store(.*)",
+  "/wiki(.*)",
 ]);
 
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);

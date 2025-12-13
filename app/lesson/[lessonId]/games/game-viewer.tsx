@@ -46,7 +46,7 @@ export default function GameViewer({ games }: { games: Game[] }) {
                         onClick={() => setActiveGame(null)}
                         className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors"
                     >
-                        Exit Game
+                        Exit 
                     </button>
                 </div>
                 <div className="flex-1 overflow-hidden bg-slate-50 flex items-center justify-center p-4">
